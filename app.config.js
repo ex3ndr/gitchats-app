@@ -11,7 +11,7 @@ const RUNTIME_VERSION = "1";
 
 export default {
   "expo": {
-    "name": "Gitchats",
+    "name": "GitChats",
     "slug": "gitchats",
     "version": "1.0.0",
     "runtimeVersion": RUNTIME_VERSION,

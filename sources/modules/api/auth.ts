@@ -30,7 +30,7 @@ export async function requestAuth() {
     return { url: body.data.url, callback: body.data.callback };
 }
 
-export async function requestAuthVerify(login: string, key: string, code: string) {
+export async function requestAuthVerify(code: string) {
     let schema = z.union([z.object({
         ok: z.literal(true),
         token: z.string()
@@ -38,7 +38,7 @@ export async function requestAuthVerify(login: string, key: string, code: string
         ok: z.literal(false),
         error: z.union([z.literal('invalid_login'), z.literal('invalid_code'), z.literal('expired_code')])
     })]);
-    let res = await axios.post(`https://${SERVER_ENDPOINT}/auth/verify`, { login, key, code });
+    let res = await axios.post(`https://${SERVER_ENDPOINT}/auth/verify`, { code });
     let body = schema.safeParse(res.data);
     if (!body.success) {
         throw new Error('Invalid response');

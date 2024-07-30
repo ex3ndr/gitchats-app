@@ -47,3 +47,12 @@ export const backoff = createBackoff({
         log('ERR', 'Error: ' + e + ', failures: ' + failuresCount);
     },
 });
+
+export const retry = createBackoff({
+    onError(e, failuresCount) {
+        log('ERR', 'Error: ' + e + ', failures: ' + failuresCount);
+        if (failuresCount > 3) {
+            throw e;
+        }
+    },
+});
