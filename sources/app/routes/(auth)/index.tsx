@@ -1,16 +1,17 @@
 import { Theme } from '@/app/theme';
 import { requestAuth, requestAuthVerify } from '@/modules/api/auth';
 import { retry } from '@/utils/time';
-import { useAsyncCommand } from '@/utils/useAsyncCommand';
 import { useLayout } from '@/utils/useLayout';
-import { Stack, router } from 'expo-router';
+import { Stack } from 'expo-router';
 import * as React from 'react';
 import { ActivityIndicator, Image, Platform, Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as WebBrowser from 'expo-web-browser';
 import { useHappyAction } from '@/utils/useHappyAction';
+import { useGlobalStateController } from '@/global';
 
 export default function Splash() {
+    const globalStateController = useGlobalStateController();
     const safeArea = useSafeAreaInsets();
     const layout = useLayout();
     const [starting, doStart] = useHappyAction(async () => {
@@ -27,7 +28,10 @@ export default function Splash() {
                 const code = new URL(output.url).searchParams.get('code')!;
                 await retry(async () => {
                     const token = await requestAuthVerify(code);
-                    console.warn(token);
+                    if (!token) {
+                        return;
+                    }
+                    globalStateController.login(token);
                 });
             }
         }

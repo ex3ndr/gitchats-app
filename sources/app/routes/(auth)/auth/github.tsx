@@ -1,9 +1,11 @@
+import { useGlobalStateController } from "@/global";
 import { requestAuthVerify } from "@/modules/api/auth";
 import { backoff } from "@/utils/time";
 import { Redirect, Stack } from "expo-router";
 import * as React from "react";
 import { ActivityIndicator, View } from "react-native";
 export default function GithubCallbackScreen() {
+    const globalStateController = useGlobalStateController();
     const code = React.useMemo(() => {
         return new URL(window.location.href).searchParams.get('code');
     }, []);
@@ -11,7 +13,10 @@ export default function GithubCallbackScreen() {
         if (code) {
             backoff(async () => {
                 const token = await requestAuthVerify(code);
-                console.warn(token);
+                if (!token) {
+                    return;
+                }
+                globalStateController.login(token);
             });
         }
     }, []);
