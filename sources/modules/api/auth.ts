@@ -2,15 +2,18 @@ import axios from 'axios';
 import * as z from 'zod';
 import { HappyError } from '@/modules/errors/HappyError';
 import { SERVER_ENDPOINT } from '@/config';
+import { Platform } from 'react-native';
 
-export async function requestAuth(login: string, key: string) {
+export async function requestAuth() {
     let schema = z.union([z.object({
         ok: z.literal(true),
+        url: z.string(),
+        callback: z.string()
     }), z.object({
         ok: z.literal(false),
         error: z.union([z.literal('too_many_attempts'), z.literal('invalid_login')])
     })]);
-    let res = await axios.post(`https://${SERVER_ENDPOINT}/auth/start`, { login, key });
+    let res = await axios.post(`https://${SERVER_ENDPOINT}/auth/start`, { platform: Platform.OS });
     let body = schema.safeParse(res.data);
     if (!body.success) {
         throw new Error('Invalid response');
@@ -24,6 +27,7 @@ export async function requestAuth(login: string, key: string) {
         }
         throw new Error('Invalid response');
     }
+    return { url: body.data.url, callback: body.data.callback };
 }
 
 export async function requestAuthVerify(login: string, key: string, code: string) {

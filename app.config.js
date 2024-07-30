@@ -16,7 +16,7 @@ export default {
     "version": "1.0.0",
     "runtimeVersion": RUNTIME_VERSION,
     "orientation": "portrait",
-    "icon": IS_NEXT ? './assets/icon-next.png' : "./assets/icon.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "scheme": "gitchats",
     "splash": {

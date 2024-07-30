@@ -1,17 +1,29 @@
 import { RoundButton } from '@/app/components/RoundButton';
 import { Theme } from '@/app/theme';
+import { requestAuth } from '@/modules/api/auth';
+import { backoff, delay } from '@/utils/time';
+import { useAsyncCommand } from '@/utils/useAsyncCommand';
 import { useLayout } from '@/utils/useLayout';
 import { Stack, router } from 'expo-router';
 import * as React from 'react';
 import { Image, Platform, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as WebBrowser from 'expo-web-browser';
 
 export default function Splash() {
     const safeArea = useSafeAreaInsets();
     const layout = useLayout();
-    const doStart = React.useCallback(async () => {
-        router.navigate('auth/phone');
-    }, []);
+    const [starting, doStart] = useAsyncCommand(async () => {
+        const { url, callback } = await requestAuth();
+        let output = await WebBrowser.openAuthSessionAsync(url, callback);
+        console.warn(output);
+        // if (Platform.OS === 'web') {
+        //     await WebBrowser.openAuthSessionAsync(url, callback);
+        //     // window.location.href = url;
+        // } else {
+        //     // Linki.openURL(url);
+        // }
+    });
     return (
         <>
             <Stack.Screen options={{ headerShown: false }} />
@@ -71,11 +83,11 @@ export default function Splash() {
                                 />
                             </a>
                         </View>
-                        <RoundButton display="inverted" title={'Continue on Web'} style={{ width: 300, marginBottom: 16 }} onPress={doStart} />
+                        <RoundButton display="inverted" title={'Login with GitHub'} style={{ width: 300, marginBottom: 16 }} onPress={doStart} loading={starting} />
                     </>
                 )}
                 {Platform.OS !== 'web' && (
-                    <RoundButton display="default" title={'Start'} style={{ width: 300, marginBottom: 16 }} onPress={doStart} />
+                    <RoundButton display="default" title={'Login with GitHub'} style={{ width: 300, marginBottom: 16 }} onPress={doStart} loading={starting} />
                 )}
                 {(layout === 'large' || Platform.OS === 'web') && (
                     <View style={{ flexGrow: 1 }} />
