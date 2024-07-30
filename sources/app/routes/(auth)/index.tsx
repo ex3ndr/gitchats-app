@@ -6,7 +6,7 @@ import { useAsyncCommand } from '@/utils/useAsyncCommand';
 import { useLayout } from '@/utils/useLayout';
 import { Stack, router } from 'expo-router';
 import * as React from 'react';
-import { Image, Platform, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Platform, Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as WebBrowser from 'expo-web-browser';
 
@@ -14,15 +14,19 @@ export default function Splash() {
     const safeArea = useSafeAreaInsets();
     const layout = useLayout();
     const [starting, doStart] = useAsyncCommand(async () => {
+
+        // Fetch auth parameters
         const { url, callback } = await requestAuth();
-        let output = await WebBrowser.openAuthSessionAsync(url, callback);
-        console.warn(output);
-        // if (Platform.OS === 'web') {
-        //     await WebBrowser.openAuthSessionAsync(url, callback);
-        //     // window.location.href = url;
-        // } else {
-        //     // Linki.openURL(url);
-        // }
+
+        // Open auth url
+        if (Platform.OS === 'web') {
+            window.location.href = url;
+        } else {
+            let output = await WebBrowser.openAuthSessionAsync(url, callback);
+            if (output.type === 'success') {
+                console.warn(output);
+            }
+        }
     });
     return (
         <>
@@ -60,6 +64,16 @@ export default function Splash() {
 
                 {Platform.OS === 'web' && (
                     <>
+                        <View style={{ flexDirection: 'row', height: 60, width: 360, marginBottom: 50, alignItems: 'center', justifyContent: 'center' }}>
+                            {starting && (
+                                <ActivityIndicator color={"white"} />
+                            )}
+                            {!starting && (
+                                <Pressable onPress={doStart}>
+                                    <Image source={require('@/app/assets/github.png')} style={{ width: 360, height: 60 }} />
+                                </Pressable>
+                            )}
+                        </View>
                         <View style={{ flexDirection: 'row', gap: 8, marginBottom: 32, width: 180 /*180 * 2 + 8*/ }}>
                             {/* <a href="https://play.google.com/store/apps/details?id=org.botmate.android">
                                 <img
@@ -83,11 +97,19 @@ export default function Splash() {
                                 />
                             </a>
                         </View>
-                        <RoundButton display="inverted" title={'Login with GitHub'} style={{ width: 300, marginBottom: 16 }} onPress={doStart} loading={starting} />
                     </>
                 )}
                 {Platform.OS !== 'web' && (
-                    <RoundButton display="default" title={'Login with GitHub'} style={{ width: 300, marginBottom: 16 }} onPress={doStart} loading={starting} />
+                    <View style={{ flexDirection: 'row', gap: 8, height: 50, width: 288, marginBottom: 32, alignItems: 'center', justifyContent: 'center' }}>
+                        {starting && (
+                            <ActivityIndicator color={"white"} />
+                        )}
+                        {!starting && (
+                            <Pressable onPress={doStart}>
+                                <Image source={require('@/app/assets/github.png')} style={{ width: 320, height: 55 }} resizeMode='contain' />
+                            </Pressable>
+                        )}
+                    </View>
                 )}
                 {(layout === 'large' || Platform.OS === 'web') && (
                     <View style={{ flexGrow: 1 }} />

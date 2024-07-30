@@ -51,7 +51,7 @@ export default {
       "backgroundColor": "#121212",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#000"
+        "backgroundColor": "#242424"
       },
       "package": "com.gitchats.android",
       "intentFilters": [
