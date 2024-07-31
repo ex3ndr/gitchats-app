@@ -16,8 +16,6 @@ const ProfileSchema = z.object({
         firstName: z.string(),
         lastName: z.string().nullable(),
         username: z.string(),
-        phone: z.string().nullable(),
-        voiceSample: z.boolean(),
         roles: z.array(z.string())
     })
 });
@@ -30,8 +28,6 @@ export class ProfileService {
     readonly jotai: Jotai;
     readonly profile = atom<Profile | null>(null);
     #sync: InvalidateSync;
-    #hadVoice = false;
-    #hadPairing: string | null = null;
 
     constructor(client: BackendClient, jotai: Jotai) {
         this.client = client;
@@ -46,20 +42,6 @@ export class ProfileService {
 
         // Run sync
         this.#sync = new InvalidateSync(async () => {
-
-            // Report voice
-            if (this.#hadVoice && !!this.#hadPairing && !storage.getBoolean('profile:voice-reported')) {
-                log('[PRF]', 'Reporting voice for the first time.');
-                await this.client.reportFirstVoiced(this.#hadPairing);
-                storage.set('profile:voice-reported', true);
-            }
-
-            // Report voice
-            if (!!this.#hadPairing && !storage.getBoolean('profile:pairing-reported')) {
-                log('[PRF]', 'Reporting pairing for the first time.');
-                await this.client.reportFirstPaired(this.#hadPairing);
-                storage.set('profile:pairing-reported', true);
-            }
 
             // Load
             let loaded = await this.client.me();
@@ -86,20 +68,6 @@ export class ProfileService {
 
     reloadProfile = async () => {
         await this.#sync.invalidateAndAwait();
-    }
-
-    reportVoice = () => {
-        if (!this.#hadVoice) {
-            this.#hadVoice = true;
-            this.#sync.invalidate();
-        }
-    }
-
-    reportPairing = (vendor: string) => {
-        if (!this.#hadPairing) {
-            this.#hadPairing = vendor;
-            this.#sync.invalidate();
-        }
     }
 
     use = () => {

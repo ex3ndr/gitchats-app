@@ -40,7 +40,7 @@ export default React.memo(() => {
         }
 
         // Delete
-        await appModel.client.accountDelete();
+        // await appModel.client.accountDelete();
 
         // Reset app
         await cleanAndReload();

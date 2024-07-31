@@ -16,14 +16,11 @@ export function _resolve(src: GlobalState): string {
     if (src.state.kind === 'need_activation') {
         return '/(onboarding)/prepare/activate';
     }
-    if (src.state.kind === 'need_name') {
-        return '/(onboarding)/prepare/name';
+    if (src.state.kind === 'unknown') {
+        return '/(onboarding)/prepare/update';
     }
     if (src.state.kind === 'need_push') {
         return '/(onboarding)/prepare/notifications';
-    }
-    if (src.state.kind === 'need_username') {
-        return '/(onboarding)/prepare/username';
     }
     throw new Error('Invalid state');
 }

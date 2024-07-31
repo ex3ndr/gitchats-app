@@ -18,11 +18,9 @@ const ONBOARDING_VERSION = 4; // Increment this to reset onboarding
 export type OnboardingState = {
     kind: 'prepare'
 } | {
-    kind: 'need_username'
-} | {
-    kind: 'need_name'
-} | {
     kind: 'need_push'
+} | {
+    kind: 'unknown'
 } | {
     kind: 'need_activation'
 };
@@ -189,18 +187,16 @@ async function refreshOnboarding(client: BackendClient): Promise<OnboardingState
 
     // Load server state
     let serverState = await client.fetchPreState();
-    console.warn(serverState);
-    if (serverState.needUsername) {
-        return { kind: 'need_username' };
-    }
-    if (serverState.needName) {
-        return { kind: 'need_name' };
+    if (!serverState.active && !serverState.canActivate) {
+        return { kind: 'unknown' };
     }
 
     // Request notifications
-    let notificationPermissions = await Notifications.getPermissionsAsync();
-    if (notificationPermissions.status === 'undetermined' && !isSkipNotifications() && notificationPermissions.canAskAgain) {
-        return { kind: 'need_push' };
+    if (Platform.OS !== 'web') {
+        let notificationPermissions = await Notifications.getPermissionsAsync();
+        if (notificationPermissions.status === 'undetermined' && !isSkipNotifications() && notificationPermissions.canAskAgain) {
+            return { kind: 'need_push' };
+        }
     }
 
     // In the end require activation

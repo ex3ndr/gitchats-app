@@ -3,7 +3,6 @@ import { backoff } from "../../utils/time";
 import { Schema, Update, Updates, sseUpdate } from "./schema";
 import { sse } from "./sse";
 import { SERVER_ENDPOINT } from "@/config";
-import { Content, contentCodec } from "./content";
 import { log } from "@/utils/logs";
 
 export class BackendClient {
@@ -19,20 +18,6 @@ export class BackendClient {
     async fetchPreState() {
         let res = await this.client.get('/pre/state');
         return Schema.preState.parse(res.data);
-    }
-
-    preUsername(username: string) {
-        return backoff(async () => {
-            let res = await this.client.post('/pre/username', { username });
-            return Schema.preUsername.parse(res.data);
-        })
-    }
-
-    preName(firstName: string, lastName: string | null) {
-        return backoff(async () => {
-            let res = await this.client.post('/pre/name', { firstName, lastName });
-            return Schema.preName.parse(res.data);
-        })
     }
 
     preComplete() {
@@ -87,9 +72,9 @@ export class BackendClient {
     // Secure
     //
 
-    async accountDelete() {
-        await this.client.post('/secure/delete', {});
-    }
+    // async accountDelete() {
+    //     await this.client.post('/secure/delete', {});
+    // }
 
     async tokenAndAccountStatus() {
         let res = await this.client.post('/secure/status', {});
@@ -110,73 +95,73 @@ export class BackendClient {
         return Schema.users.parse(res.data).users;
     }
 
-    async uploadVoiceSample(sample: string) {
-        await this.client.post('/app/profile/edit/voice', { sample });
-    }
+    // async uploadVoiceSample(sample: string) {
+    //     await this.client.post('/app/profile/edit/voice', { sample });
+    // }
 
-    async reportFirstPaired(vendor: string) {
-        let res = await this.client.post('/app/report/paired', { vendor });
-        Schema.ok.parse(res.data);
-    }
+    // async reportFirstPaired(vendor: string) {
+    //     let res = await this.client.post('/app/report/paired', { vendor });
+    //     Schema.ok.parse(res.data);
+    // }
 
-    async reportFirstVoiced(vendor: string) {
-        let res = await this.client.post('/app/report/voiced', { vendor });
-        Schema.ok.parse(res.data);
-    }
+    // async reportFirstVoiced(vendor: string) {
+    //     let res = await this.client.post('/app/report/voiced', { vendor });
+    //     Schema.ok.parse(res.data);
+    // }
 
-    //
-    // Developer
-    //
+    // //
+    // // Developer
+    // //
 
     async updateDeveloperMode(enable: boolean) {
         let res = await this.client.post('/app/profile/edit/developer', { enable });
         Schema.ok.parse(res.data);
     }
 
-    async personalTokens() {
-        let res = await this.client.post('/app/dev/tokens', {});
-        return Schema.tokens.parse(res.data).tokens;
-    }
+    // async personalTokens() {
+    //     let res = await this.client.post('/app/dev/tokens', {});
+    //     return Schema.tokens.parse(res.data).tokens;
+    // }
 
-    async createPersonalToken() {
-        let res = await this.client.post('/app/dev/tokens/create', {});
-        return Schema.tokenCreate.parse(res.data).token;
-    }
+    // async createPersonalToken() {
+    //     let res = await this.client.post('/app/dev/tokens/create', {});
+    //     return Schema.tokenCreate.parse(res.data).token;
+    // }
 
-    async deletePersonalToken(id: string) {
-        let res = await this.client.post('/app/dev/tokens/delete', { id });
-        Schema.ok.parse(res.data);
-    }
+    // async deletePersonalToken(id: string) {
+    //     let res = await this.client.post('/app/dev/tokens/delete', { id });
+    //     Schema.ok.parse(res.data);
+    // }
 
-    //
-    // Memories
-    //
+    // //
+    // // Memories
+    // //
 
-    async memories(ids: string[]) {
-        let res = await this.client.post('/app/memories', { ids });
-        return Schema.listMemories.parse(res.data).memories;
-    }
+    // async memories(ids: string[]) {
+    //     let res = await this.client.post('/app/memories', { ids });
+    //     return Schema.listMemories.parse(res.data).memories;
+    // }
 
-    //
-    // Feed
-    //
+    // //
+    // // Feed
+    // //
 
-    async getFeedSeq() {
-        let res = await this.client.post('/app/feed/state', {});
-        return Schema.feedState.parse(res.data).seqno;
-    }
+    // async getFeedSeq() {
+    //     let res = await this.client.post('/app/feed/state', {});
+    //     return Schema.feedState.parse(res.data).seqno;
+    // }
 
-    async getFeedList(args: { source: string, before: number | null, after: number | null }) {
-        let res = await this.client.post('/app/feed/list', args);
-        let parsed = Schema.feedList.parse(res.data);
-        let items: { seq: number, date: number, by: string, content: Content }[] = [];
-        for (let i of parsed.items) {
-            let content = contentCodec.parse(i.content);
-            items.push({ seq: i.seq, date: i.date, by: i.by, content });
-        }
-        return {
-            items,
-            next: parsed.next
-        }
-    }
+    // async getFeedList(args: { source: string, before: number | null, after: number | null }) {
+    //     let res = await this.client.post('/app/feed/list', args);
+    //     let parsed = Schema.feedList.parse(res.data);
+    //     let items: { seq: number, date: number, by: string, content: Content }[] = [];
+    //     for (let i of parsed.items) {
+    //         let content = contentCodec.parse(i.content);
+    //         items.push({ seq: i.seq, date: i.date, by: i.by, content });
+    //     }
+    //     return {
+    //         items,
+    //         next: parsed.next
+    //     }
+    // }
 }

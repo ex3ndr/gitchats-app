@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
 import * as Notifications from 'expo-notifications';
-import { markSkipNotifications, useGlobalStateController } from '@/global';
+import { markSkipNotifications } from '@/global';
 import { Theme } from '@/app/theme';
 import { RoundButton } from '@/app/components/RoundButton';
 import { useRefresh } from '../_resolve';

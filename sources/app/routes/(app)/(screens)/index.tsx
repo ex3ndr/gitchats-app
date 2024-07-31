@@ -3,7 +3,6 @@ import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-nati
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Theme } from '@/app/theme';
-import { Feed } from '@/app/components/feed/Feed';
 import { HomeHeader, HomeTopBar } from '../_navigation';
 import { useLayout } from '@/utils/useLayout';
 import LottieView from 'lottie-react-native';

@@ -7,9 +7,7 @@ import { TokenExpireService } from "./TokenExpireService";
 import PostHog from "posthog-react-native";
 import { getPostHog } from "../track/track";
 import { ProfileService } from "./ProfileService";
-import { FeedService } from "./FeedService";
 import { UserService } from "./UserService";
-import { MemoryService } from "./MemoryService";
 import { NotificationsService } from "./NotificationsService";
 import { AppUpdateService } from "./AppUpdateService";
 
@@ -21,8 +19,6 @@ export class AppService {
     readonly tokenExpire: TokenExpireService;
     readonly profile: ProfileService;
     readonly users: UserService;
-    readonly memory: MemoryService;
-    readonly feed: FeedService;
     readonly notifications: NotificationsService;
     readonly appUpdates: AppUpdateService;
 
@@ -34,8 +30,6 @@ export class AppService {
         this.updates = new UpdatesModel(client);
         this.tokenExpire = new TokenExpireService(client);
         this.users = new UserService(client);
-        this.memory = new MemoryService(client);
-        this.feed = new FeedService(client, this.jotai, this.users, this.memory);
         this.notifications = new NotificationsService(client);
         this.appUpdates = new AppUpdateService();
         this.updates.onUpdates = this.#handleUpdate;
@@ -45,9 +39,6 @@ export class AppService {
     }
 
     #handleUpdate = async (update: Update) => {
-        // console.warn(update);
-        if (update.type === 'feed-posted') {
-            this.feed.onUpdate(update);
-        }
+        // TODO: Routing
     }
 }

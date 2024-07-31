@@ -146,20 +146,6 @@ const UpdateBanner = () => {
     return null;
 }
 
-const VoiceSampleBanner = () => {
-    const app = useAppModel();
-    const me = app.profile.use();
-    const needVoiceSample = me && !me.voiceSample;
-
-    if (needVoiceSample) {
-        return (
-            <Banner title="Voice sample needed" text="To improve AI experience, please, record a voice sample" kind="normal" onPress={() => router.navigate('/settings/voice')} />
-        );
-    }
-
-    return null;
-};
-
 //
 // Home header
 //

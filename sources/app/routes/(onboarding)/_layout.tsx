@@ -1,5 +1,5 @@
 import { useGlobalState } from "@/global";
-import { Redirect, Slot, Stack } from "expo-router";
+import { Redirect, Stack } from "expo-router";
 
 export default function AppLayout() {
     const state = useGlobalState();

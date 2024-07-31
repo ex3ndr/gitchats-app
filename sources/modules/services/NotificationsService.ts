@@ -2,6 +2,7 @@ import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { backoff } from "../../utils/time";
 import { BackendClient } from "../api/client";
+import { Platform } from 'react-native';
 
 export class NotificationsService {
     readonly client: BackendClient;
@@ -9,7 +10,7 @@ export class NotificationsService {
     constructor(client: BackendClient) {
         this.client = client;
 
-        if (!__DEV__) {
+        if (!__DEV__ && Platform.OS !== 'web') {
             backoff(async () => {
 
                 // Request permissions
