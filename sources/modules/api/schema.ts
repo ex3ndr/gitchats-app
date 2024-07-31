@@ -85,8 +85,13 @@ export const Schema = {
             firstName: z.string(),
             lastName: z.string().nullable(),
             username: z.string(),
-            email: z.string().nullable(),
-            phone: z.string().nullable(),
+            github: z.string().nullable(),
+            photo: z.object({
+                url: z.string(),
+                thumbhash: z.string(),
+                width: z.number(),
+                height: z.number()
+            }).nullable(),
             roles: z.array(z.string())
         })
     }),
