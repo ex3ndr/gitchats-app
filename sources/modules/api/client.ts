@@ -95,23 +95,9 @@ export class BackendClient {
         return Schema.users.parse(res.data).users;
     }
 
-    // async uploadVoiceSample(sample: string) {
-    //     await this.client.post('/app/profile/edit/voice', { sample });
-    // }
-
-    // async reportFirstPaired(vendor: string) {
-    //     let res = await this.client.post('/app/report/paired', { vendor });
-    //     Schema.ok.parse(res.data);
-    // }
-
-    // async reportFirstVoiced(vendor: string) {
-    //     let res = await this.client.post('/app/report/voiced', { vendor });
-    //     Schema.ok.parse(res.data);
-    // }
-
-    // //
-    // // Developer
-    // //
+    //
+    // Developer
+    //
 
     async updateDeveloperMode(enable: boolean) {
         let res = await this.client.post('/app/profile/edit/developer', { enable });
@@ -133,35 +119,25 @@ export class BackendClient {
     //     Schema.ok.parse(res.data);
     // }
 
-    // //
-    // // Memories
-    // //
+    //
+    // Feed
+    //
 
-    // async memories(ids: string[]) {
-    //     let res = await this.client.post('/app/memories', { ids });
-    //     return Schema.listMemories.parse(res.data).memories;
-    // }
+    async getFeedSeq(source: string) {
+        let res = await this.client.post('/app/feed/state', { source });
+        return Schema.feedState.parse(res.data).seqno;
+    }
 
-    // //
-    // // Feed
-    // //
-
-    // async getFeedSeq() {
-    //     let res = await this.client.post('/app/feed/state', {});
-    //     return Schema.feedState.parse(res.data).seqno;
-    // }
-
-    // async getFeedList(args: { source: string, before: number | null, after: number | null }) {
-    //     let res = await this.client.post('/app/feed/list', args);
-    //     let parsed = Schema.feedList.parse(res.data);
-    //     let items: { seq: number, date: number, by: string, content: Content }[] = [];
-    //     for (let i of parsed.items) {
-    //         let content = contentCodec.parse(i.content);
-    //         items.push({ seq: i.seq, date: i.date, by: i.by, content });
-    //     }
-    //     return {
-    //         items,
-    //         next: parsed.next
-    //     }
-    // }
+    async getFeedList(args: { source: string, before: number | null, after: number | null }) {
+        let res = await this.client.post('/app/feed/list', args);
+        let parsed = Schema.feedList.parse(res.data);
+        let items: { seq: number, date: number, by: string, content: any }[] = [];
+        for (let i of parsed.items) {
+            items.push({ seq: i.seq, date: i.date, by: i.by, content: i.content });
+        }
+        return {
+            items,
+            next: parsed.next
+        }
+    }
 }

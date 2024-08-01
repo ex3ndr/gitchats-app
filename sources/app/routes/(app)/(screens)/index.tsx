@@ -8,9 +8,7 @@ import { useLayout } from '@/utils/useLayout';
 import LottieView from 'lottie-react-native';
 import { useRouter } from 'expo-router';
 import { useAppModel } from '@/global';
-import { TimeView } from '@/app/components/TimeView';
-import { Image } from 'expo-image';
-import MapView from '@/app/components/MapView';
+import { Feed } from '@/app/components/feed/Feed';
 
 export default React.memo(() => {
     const app = useAppModel();
@@ -26,7 +24,6 @@ export default React.memo(() => {
     const header = (
         <View style={{ paddingHorizontal: 16, gap: 16, marginTop: (layout === 'large' ? (24 + safeArea.top) : 8) }}>
             <HomeTopBar />
-            <Text style={{ fontSize: 18, color: Theme.text, paddingHorizontal: 16, fontWeight: '700' }}>Moments</Text>
         </View>
     );
     const footer = (loading: boolean) => {
@@ -65,7 +62,7 @@ export default React.memo(() => {
             </View>
         </ScrollView>
     );
-    const chatButton = (
+    const composeButton = (
         <View
             style={{
                 position: 'absolute',
@@ -98,7 +95,7 @@ export default React.memo(() => {
                     elevation: 5,
                 }}
             >
-                <Ionicons name="search-outline" size={34} color="black" />
+                <Ionicons name="add-outline" size={34} color="black" />
             </Pressable>
         </View>
     );
@@ -106,215 +103,15 @@ export default React.memo(() => {
         <>
             <HomeHeader />
             <View style={{ alignSelf: 'stretch', flexGrow: 1, flexBasis: 0 }}>
-                <ScrollView style={{ flexGrow: 1, flexBasis: 0 }}>
-                    <MapView style={{ height: 250, pointerEvents: 'none' }} showsMyLocationButton={true} showsUserLocation={true} />
-                    <View>
-                        <View style={{ flexDirection: 'column', marginTop: 16, gap: 8 }}>
-                            <Pressable
-                                style={{
-                                    marginHorizontal: 16,
-                                    borderRadius: 16,
-                                    borderWidth: 0.5,
-                                    borderColor: '#272727',
-                                    flexDirection: 'row',
-                                    backgroundColor: Theme.panel,
-                                    flexShrink: 0
-                                }}
-                            >
-                                <Image
-                                    source={{ uri: "https://files.korshakov.com/public/tmp/ComfyUI_00068_.png" }}
-                                    // placeholder={{ thumbhash: memory.image.thumbhash }}
-                                    style={{ width: 56, height: 56, aspectRatio: 1, borderRadius: 16, margin: 2 }}
-                                />
-                                <View style={{
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    borderBottomLeftRadius: 16,
-                                    borderBottomRightRadius: 16
-                                }}>
-
-                                    <View style={{ flexDirection: 'row', marginBottom: 4, paddingHorizontal: 8 }}>
-                                        <Text style={{ color: Theme.text }}><Text style={{ opacity: 0.7 }}>@ex3ndr</Text> </Text>
-                                        <Text style={{ color: Theme.text, opacity: 0.4 }}><TimeView time={Date.now()} /></Text>
-                                    </View>
-                                    <Text style={{ fontSize: 16, color: Theme.text, paddingHorizontal: 8 }} numberOfLines={1}>Remarkable coffe here!</Text>
-                                </View>
-                            </Pressable>
-
-                            <Pressable
-                                style={{
-                                    marginHorizontal: 16,
-                                    borderRadius: 16,
-                                    borderWidth: 0.5,
-                                    borderColor: '#272727',
-                                    flexDirection: 'row',
-                                    backgroundColor: Theme.panel,
-                                    flexShrink: 0
-                                }}
-                            >
-                                <Image
-                                    source={{ uri: "https://files.korshakov.com/public/tmp/ComfyUI_00071_.png" }}
-                                    // placeholder={{ thumbhash: memory.image.thumbhash }}
-                                    style={{ width: 56, height: 56, aspectRatio: 1, borderRadius: 16, margin: 2 }}
-                                />
-                                <View style={{
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    borderBottomLeftRadius: 16,
-                                    borderBottomRightRadius: 16
-                                }}>
-
-                                    <View style={{ flexDirection: 'row', marginBottom: 4, paddingHorizontal: 8 }}>
-                                        <Text style={{ color: Theme.text }}><Text style={{ opacity: 0.7 }}>@ex3ndr</Text> </Text>
-                                        <Text style={{ color: Theme.text, opacity: 0.4 }}><TimeView time={Date.now()} /></Text>
-                                    </View>
-                                    <Text style={{ fontSize: 16, color: Theme.text, paddingHorizontal: 8 }} numberOfLines={1}>Not so good</Text>
-                                </View>
-                            </Pressable>
-
-                            <Pressable
-                                style={{
-                                    marginHorizontal: 16,
-                                    borderRadius: 16,
-                                    borderWidth: 0.5,
-                                    borderColor: '#272727',
-                                    flexDirection: 'row',
-                                    backgroundColor: Theme.panel,
-                                    flexShrink: 0
-                                }}
-                            >
-                                <Image
-                                    source={{ uri: "https://files.korshakov.com/public/tmp/ComfyUI_00072_.png" }}
-                                    // placeholder={{ thumbhash: memory.image.thumbhash }}
-                                    style={{ width: 56, height: 56, aspectRatio: 1, borderRadius: 16, margin: 2 }}
-                                />
-                                <View style={{
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    borderBottomLeftRadius: 16,
-                                    borderBottomRightRadius: 16,
-                                    paddingRight: 8,
-                                    flexGrow: 1,
-                                    flexBasis: 0
-                                }}>
-
-                                    <View style={{ flexDirection: 'row', marginBottom: 4, paddingHorizontal: 8 }}>
-                                        <Text style={{ color: Theme.text }}><Text style={{ opacity: 0.7 }}>@ex3ndr</Text> </Text>
-                                        <Text style={{ color: Theme.text, opacity: 0.4 }}><TimeView time={Date.now()} /></Text>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', alignSelf: 'stretch' }}>
-                                        <Text style={{ fontSize: 16, color: Theme.text, paddingHorizontal: 8, alignSelf: 'stretch', flexBasis: 0, flexGrow: 1 }} ellipsizeMode='tail' numberOfLines={1}>Good park with a playground in good condition!</Text>
-                                    </View>
-                                </View>
-                            </Pressable>
-
-
-                            <Pressable
-                                style={{
-                                    marginHorizontal: 16,
-                                    borderRadius: 16,
-                                    borderWidth: 0.5,
-                                    borderColor: '#272727',
-                                    flexDirection: 'row',
-                                    backgroundColor: Theme.panel,
-                                    flexShrink: 0
-                                }}
-                            >
-                                <Image
-                                    source={{ uri: "https://files.korshakov.com/public/tmp/ComfyUI_00068_.png" }}
-                                    // placeholder={{ thumbhash: memory.image.thumbhash }}
-                                    style={{ width: 56, height: 56, aspectRatio: 1, borderRadius: 16, margin: 2 }}
-                                />
-                                <View style={{
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    borderBottomLeftRadius: 16,
-                                    borderBottomRightRadius: 16
-                                }}>
-
-                                    <View style={{ flexDirection: 'row', marginBottom: 4, paddingHorizontal: 8 }}>
-                                        <Text style={{ color: Theme.text }}><Text style={{ opacity: 0.7 }}>@ex3ndr</Text> </Text>
-                                        <Text style={{ color: Theme.text, opacity: 0.4 }}><TimeView time={Date.now()} /></Text>
-                                    </View>
-                                    <Text style={{ fontSize: 16, color: Theme.text, paddingHorizontal: 8 }} numberOfLines={1}>Remarkable coffe here!</Text>
-                                </View>
-                            </Pressable>
-
-
-                            <Pressable
-                                style={{
-                                    marginHorizontal: 16,
-                                    borderRadius: 16,
-                                    borderWidth: 0.5,
-                                    borderColor: '#272727',
-                                    flexDirection: 'row',
-                                    backgroundColor: Theme.panel,
-                                    flexShrink: 0
-                                }}
-                            >
-                                <Image
-                                    source={{ uri: "https://files.korshakov.com/public/tmp/ComfyUI_00068_.png" }}
-                                    // placeholder={{ thumbhash: memory.image.thumbhash }}
-                                    style={{ width: 56, height: 56, aspectRatio: 1, borderRadius: 16, margin: 2 }}
-                                />
-                                <View style={{
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    borderBottomLeftRadius: 16,
-                                    borderBottomRightRadius: 16
-                                }}>
-
-                                    <View style={{ flexDirection: 'row', marginBottom: 4, paddingHorizontal: 8 }}>
-                                        <Text style={{ color: Theme.text }}><Text style={{ opacity: 0.7 }}>@ex3ndr</Text> </Text>
-                                        <Text style={{ color: Theme.text, opacity: 0.4 }}><TimeView time={Date.now()} /></Text>
-                                    </View>
-                                    <Text style={{ fontSize: 16, color: Theme.text, paddingHorizontal: 8 }} numberOfLines={1}>Remarkable coffe here!</Text>
-                                </View>
-                            </Pressable>
-
-                            <Pressable
-                                style={{
-                                    marginHorizontal: 16,
-                                    marginVertical: 8,
-                                    borderRadius: 16,
-                                    borderWidth: 0.5,
-                                    borderColor: '#272727',
-                                    flexDirection: 'row',
-                                    backgroundColor: Theme.panel,
-                                    flexShrink: 0
-                                }}
-                            >
-                                <Image
-                                    source={{ uri: "https://files.korshakov.com/public/tmp/ComfyUI_00068_.png" }}
-                                    // placeholder={{ thumbhash: memory.image.thumbhash }}
-                                    style={{ width: 56, height: 56, aspectRatio: 1, borderRadius: 16, margin: 2 }}
-                                />
-                                <View style={{
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    borderBottomLeftRadius: 16,
-                                    borderBottomRightRadius: 16
-                                }}>
-
-                                    <View style={{ flexDirection: 'row', marginBottom: 4, paddingHorizontal: 8 }}>
-                                        <Text style={{ color: Theme.text }}><Text style={{ opacity: 0.7 }}>@ex3ndr</Text> </Text>
-                                        <Text style={{ color: Theme.text, opacity: 0.4 }}><TimeView time={Date.now()} /></Text>
-                                    </View>
-                                    <Text style={{ fontSize: 16, color: Theme.text, paddingHorizontal: 8 }} numberOfLines={1}>Remarkable coffe here!</Text>
-                                </View>
-                            </Pressable>
-                        </View>
-                    </View>
-                </ScrollView>
-                {/* <Feed
-                    feed='smart'
+                <Feed
+                    feed='home'
                     display='large'
                     header={() => header}
                     footer={footer}
                     empty={empty}
                     loading={loading}
-                /> */}
-                {experimental && chatButton}
+                />
+                {experimental && composeButton}
             </View>
         </>
     );

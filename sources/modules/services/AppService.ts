@@ -10,6 +10,7 @@ import { ProfileService } from "./ProfileService";
 import { UserService } from "./UserService";
 import { NotificationsService } from "./NotificationsService";
 import { AppUpdateService } from "./AppUpdateService";
+import { FeedService } from "./FeedService";
 
 export class AppService {
     readonly client: BackendClient;
@@ -21,6 +22,7 @@ export class AppService {
     readonly users: UserService;
     readonly notifications: NotificationsService;
     readonly appUpdates: AppUpdateService;
+    readonly feed: FeedService;
 
     constructor(client: BackendClient) {
         this.client = client;
@@ -32,6 +34,7 @@ export class AppService {
         this.users = new UserService(client);
         this.notifications = new NotificationsService(client);
         this.appUpdates = new AppUpdateService();
+        this.feed = new FeedService(client, this.jotai, this.users);
         this.updates.onUpdates = this.#handleUpdate;
 
         // Start
