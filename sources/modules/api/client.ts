@@ -72,9 +72,9 @@ export class BackendClient {
     // Secure
     //
 
-    // async accountDelete() {
-    //     await this.client.post('/secure/delete', {});
-    // }
+    async accountDelete() {
+        await this.client.post('/secure/delete', {});
+    }
 
     async tokenAndAccountStatus() {
         let res = await this.client.post('/secure/status', {});
