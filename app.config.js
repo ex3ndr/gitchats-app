@@ -89,7 +89,7 @@ export default {
     ],
     "extra": {
       "eas": {
-        "projectId": "7d925825-bdf8-4ee0-bff3-f2d873dbff37"
+        "projectId": "5f5fdda0-e781-4f31-9a7a-e890cb581e3f"
       },
       "bugsnag": {
         "apiKey": "d6752ef54836994437180027a581b761"
@@ -97,7 +97,7 @@ export default {
     },
     "owner": "bulkacorp",
     "updates": {
-      "url": "https://u.expo.dev/7d925825-bdf8-4ee0-bff3-f2d873dbff37"
+      "url": "https://u.expo.dev/5f5fdda0-e781-4f31-9a7a-e890cb581e3f"
     },
     "experiments": {
       "typedRoutes": true
